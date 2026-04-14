@@ -129,6 +129,17 @@ function getCoverageGlyphId(ranges, index) {
   return null;
 }
 
+function extractCmapIcons(font) {
+  const icons = {};
+  for (let cp = 0xf100; cp <= 0xf400; cp++) {
+    const glyph = font.charToGlyph(String.fromCodePoint(cp));
+    if (glyph && glyph.index !== 0 && glyph.name) {
+      icons[glyph.name] = "0x" + cp.toString(16);
+    }
+  }
+  return icons;
+}
+
 function guessCategory(name) {
   for (const { pattern, category } of PATTERNS) {
     if (pattern.test(name)) return category;
@@ -153,13 +164,18 @@ async function main() {
 
   const regLigatures = extractLigatures(regFont);
   const fillLigatures = extractLigatures(fillFont);
+  const regCmap = extractCmapIcons(regFont);
+  const fillCmap = extractCmapIcons(fillFont);
 
-  console.log(`Regular: ${Object.keys(regLigatures).length} ligatures`);
-  console.log(`Filled: ${Object.keys(fillLigatures).length} ligatures`);
+  const regIcons = { ...regCmap, ...regLigatures };
+  const fillIcons = { ...fillCmap, ...fillLigatures };
+
+  console.log(`Regular: ${Object.keys(regIcons).length} icons (${Object.keys(regLigatures).length} ligatures + ${Object.keys(regCmap).length} cmap)`);
+  console.log(`Filled: ${Object.keys(fillIcons).length} icons (${Object.keys(fillLigatures).length} ligatures + ${Object.keys(fillCmap).length} cmap)`);
 
   const allNames = new Set([
-    ...Object.keys(regLigatures),
-    ...Object.keys(fillLigatures),
+    ...Object.keys(regIcons),
+    ...Object.keys(fillIcons),
   ]);
 
   const overrides = JSON.parse(fs.readFileSync(CATEGORIES_FILE, "utf-8"));
@@ -185,8 +201,8 @@ async function main() {
 
   for (const name of [...allNames].sort()) {
     const icon = { name };
-    if (regLigatures[name]) icon.reg = regLigatures[name];
-    if (fillLigatures[name]) icon.fill = fillLigatures[name];
+    if (regIcons[name]) icon.reg = regIcons[name];
+    if (fillIcons[name]) icon.fill = fillIcons[name];
 
     let category;
     if (overrides[name]) {
@@ -213,8 +229,8 @@ async function main() {
     fillOnly: 0,
   };
   for (const name of allNames) {
-    const hasReg = !!regLigatures[name];
-    const hasFill = !!fillLigatures[name];
+    const hasReg = !!regIcons[name];
+    const hasFill = !!fillIcons[name];
     if (hasReg && hasFill) stats.both++;
     else if (hasReg) stats.regOnly++;
     else stats.fillOnly++;
