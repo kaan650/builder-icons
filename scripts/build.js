@@ -49,7 +49,7 @@ const PATTERNS = [
   { pattern: /^(envelope|headphones|microphone|paper-airplane|phone|speech|video-camera)/, category: "Communication" },
   { pattern: /^(four-bars-horizontal|list-bulleted|list-numbered|paragraph|quotation|text-)/, category: "Text Formatting" },
   { pattern: /^(arrow|caret-small|chevron|dual-arrows|three-chevrons|two-arrows)/, category: "Arrows & Navigation" },
-  { pattern: /^(check|checkmark-square|circle-check|circle-i$|circle-minus|circle-play|circle-plus|circle-question|circle-slash|circle-three-dots|circle-x$|crop|frame-collapsed|frame-corners|frame-expanded|grid$|minus$|minus-small|nine-dots|picture-in-picture|plus-large|plus-small|sidebar|six-dots|square-check|square-minus|squares-grid|stacked-squares|three-bars|three-dots|three-horizontal|three-sliders|three-stacked|two-stacked|two-switches|x-small)/, category: "UI Elements" },
+  { pattern: /^(check|checkmark-square|circle-check|circle-i$|circle-minus|circle-play|circle-plus|circle-question|circle-slash|circle-three-dots|circle-x$|crop|frame-collapsed|frame-corners|frame-expanded|grid$|minus$|minus-small|nine-dots|picture-in-picture|plus-large|plus-small|sidebar|six-dots|square-check|square-minus|squares-grid|stacked-squares|three-bars|three-dots|three-horizontal|three-sliders|three-stacked|two-stacked|two-switches|x$|x-small)/, category: "UI Elements" },
   { pattern: /^(code|controller|cube-question|cube-vertex|gear|generic-dpad|hack-week|hammer-code|keyboard|lab-beaker|nexus|ro-gro|speedometer|square-bar-graph|square-code|studio|teletype)/, category: "Developer" },
   { pattern: /^(building-store|gift-|premium|roblox-plus|robux|shopping|tag-sparkle|wallet)/, category: "E-Commerce" },
 ];
