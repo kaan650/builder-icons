@@ -1,0 +1,350 @@
+/* ── Fonts ───────────────────────────────────── */
+
+@font-face {
+  font-family: 'BI-Reg';
+  src: url('../fonts/BuilderIcons-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BI-Fill';
+  src: url('../fonts/BuilderIcons-Filled.ttf') format('truetype');
+  font-display: swap;
+}
+
+/* ── Reset & Base ────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0b0b0f;
+  color: #e4e4e7;
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────── */
+
+.header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.header p {
+  font-size: 13px;
+  color: #a5b4fc;
+}
+
+.header .stats {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.header .stat {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  color: #c7d2fe;
+}
+
+/* ── Toolbar ─────────────────────────────────── */
+
+.toolbar {
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #0b0b0f;
+  border-bottom: 1px solid #1e1e2e;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.toolbar input {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 14px 10px 38px;
+  background: #1a1a2e;
+  border: 1px solid #2a2a3e;
+  border-radius: 10px;
+  color: #e4e4e7;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.toolbar input:focus {
+  border-color: #6366f1;
+}
+
+.toolbar .search-icon {
+  position: absolute;
+  left: 38px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+}
+
+/* ── Variant Toggle ──────────────────────────── */
+
+.variant-toggle {
+  display: flex;
+  background: #1a1a2e;
+  border: 1px solid #2a2a3e;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.variant-toggle button {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.variant-toggle button.active {
+  background: #6366f1;
+  color: #fff;
+}
+
+/* ── Category Tabs ───────────────────────────── */
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding: 8px 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  padding: 5px 12px;
+  background: #1a1a2e;
+  border: 1px solid #2a2a3e;
+  border-radius: 20px;
+  font-size: 11px;
+  color: #9ca3af;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.tab:hover {
+  border-color: #6366f1;
+  color: #c7d2fe;
+}
+
+.tab.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #fff;
+}
+
+/* ── Icon Grid ───────────────────────────────── */
+
+.category {
+  padding: 14px 24px;
+}
+
+.category-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #818cf8;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-title span {
+  background: #1e1e3a;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 6px;
+}
+
+/* ── Icon Card ───────────────────────────────── */
+
+.icon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 4px 7px;
+  background: #111118;
+  border: 1px solid #1c1c2e;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.icon-card:hover {
+  background: #1e1e3a;
+  border-color: #6366f1;
+  transform: translateY(-2px);
+}
+
+.icon-card .glyphs {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 5px;
+  min-height: 36px;
+}
+
+.icon-card .glyph-reg {
+  font-family: 'BI-Reg';
+  font-size: 28px;
+  color: #e4e4e7;
+  line-height: 1;
+}
+
+.icon-card .glyph-fill {
+  font-family: 'BI-Fill';
+  font-size: 28px;
+  color: #e4e4e7;
+  line-height: 1;
+}
+
+.icon-card .glyph-single {
+  font-size: 32px;
+}
+
+.icon-card .divider {
+  width: 1px;
+  height: 24px;
+  background: #2a2a3e;
+}
+
+.icon-card .name {
+  font-size: 8.5px;
+  color: #6b7280;
+  text-align: center;
+  word-break: break-all;
+  line-height: 1.25;
+  max-height: 2.5em;
+  overflow: hidden;
+  padding: 0 2px;
+}
+
+/* ── Badges ──────────────────────────────────── */
+
+.icon-card .badge {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  font-size: 7px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.badge-only-reg {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+.badge-only-fill {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+}
+
+/* ── Toast ───────────────────────────────────── */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #6366f1;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: transform 0.3s ease;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Misc ────────────────────────────────────── */
+
+.count-badge {
+  font-size: 12px;
+  color: #6b7280;
+  padding: 0 24px 4px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  padding: 4px 24px 8px;
+  font-size: 11px;
+  color: #6b7280;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-both { background: #6366f1; }
+.dot-reg  { background: #4ade80; }
+.dot-fill { background: #c084fc; }
