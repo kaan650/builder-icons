@@ -42,15 +42,16 @@ const PATTERNS = [
   { pattern: /^(amazon|android|apple|discord|facebook|figma|github|guilded|instagram|linkedin|messenger|meta|microsoft|slack|tencent|tik-tok|twitch|twitter|we-chat|whatsapp|youtube)/, category: "Social Media" },
   { pattern: /^playstation|^ps[0-9-]|^ps-/, category: "PlayStation" },
   { pattern: /^xbox/, category: "Xbox" },
-  { pattern: /^(arm-|beard|dot-frame|eyebrow|eyelash|face-|head-|leg|lips|lipstick|nose|person|torso)/, category: "Avatar & Body" },
-  { pattern: /^(backpack|belt|bow-tie|butterfly-wing|clothes|dress|glasses|hat-|helmet|hoodie|jacket|pants|shirt|shoe|shorts|skirt|sweater|tshirt|vest|wings)/, category: "Clothing & Fashion" },
-  { pattern: /^(blush|cosmetic|eyeshadow|makeup|nail-polish)/, category: "Makeup" },
-  { pattern: /^(fast-forward|loop|microphone|music|pause|play|record|rewind|shuffle|skip|speaker|stop-media|volume)/, category: "Media Controls" },
-  { pattern: /^(at-sign|bell|bookmark|chat|comment|envelope|inbox|mail|megaphone|message|notification|phone|speech)/, category: "Communication" },
-  { pattern: /^(align-|bold|font|heading|indent|italic|line-spacing|list-|paragraph|strikethrough|subscript|superscript|text-|underline)/, category: "Text Formatting" },
-  { pattern: /^(arrow|chevron|corner|direction)/, category: "Arrows & Navigation" },
-  { pattern: /^(api|bug|code|command|console|database|deploy|git|terminal|variable|webhook)/, category: "Developer" },
-  { pattern: /^(cart|coin|credit-card|currency|dollar|money|payment|price|receipt|shop|store|wallet)/, category: "E-Commerce" },
+  { pattern: /^(arm|beard|dot-frame|eyebrow|eyelash|face-|head-|leg|lips|lipstick|nose|person|torso)/, category: "Avatar & Body" },
+  { pattern: /^(backpack|belt|bow-tie|butterfly-wing|clothes|dress|glasses|hat-|helmet|hoodie|jacket|mirror-standing|necklace|pants|purse|shirt|shoe|shorts|skirt|sweater|tshirt|vest|wings)/, category: "Clothing & Fashion" },
+  { pattern: /^(blush|compact-makeup|cosmetic|eye-with-eyeliner|eyeshadow|makeup|mascara|nail-polish|two-makeup)/, category: "Makeup" },
+  { pattern: /^(audio-wave|fast-forward|frame-record|frame-soundwave|loop|music|pause|play|record|rewind|shuffle|skip|speaker|stop-large|stop-small|stop-media|volume)/, category: "Media Controls" },
+  { pattern: /^(envelope|headphones|microphone|paper-airplane|phone|speech|video-camera)/, category: "Communication" },
+  { pattern: /^(four-bars-horizontal|list-bulleted|list-numbered|paragraph|quotation|text-)/, category: "Text Formatting" },
+  { pattern: /^(arrow|caret-small|chevron|dual-arrows|three-chevrons|two-arrows)/, category: "Arrows & Navigation" },
+  { pattern: /^(check|checkmark-square|circle-check|circle-i$|circle-minus|circle-play|circle-plus|circle-question|circle-slash|circle-three-dots|circle-x$|crop|frame-collapsed|frame-corners|frame-expanded|grid$|minus$|minus-small|nine-dots|picture-in-picture|plus-large|plus-small|sidebar|six-dots|square-check|square-minus|squares-grid|stacked-squares|three-bars|three-dots|three-horizontal|three-sliders|three-stacked|two-stacked|two-switches|x-small)/, category: "UI Elements" },
+  { pattern: /^(code|controller|cube-question|cube-vertex|gear|generic-dpad|hack-week|hammer-code|keyboard|lab-beaker|nexus|ro-gro|speedometer|square-bar-graph|square-code|studio|teletype)/, category: "Developer" },
+  { pattern: /^(building-store|gift-|premium|roblox-plus|robux|shopping|tag-sparkle|wallet)/, category: "E-Commerce" },
 ];
 
 function download(url) {
@@ -161,7 +162,19 @@ async function main() {
     ...Object.keys(fillLigatures),
   ]);
 
-  const knownCategories = JSON.parse(fs.readFileSync(CATEGORIES_FILE, "utf-8"));
+  const overrides = JSON.parse(fs.readFileSync(CATEGORIES_FILE, "utf-8"));
+
+  const knownNames = new Set();
+  try {
+    const oldJS = fs.readFileSync(APP_JS, "utf-8");
+    const oldMatch = oldJS.match(/const categories = (\{.*?\});/s);
+    if (oldMatch) {
+      const oldCats = eval("(" + oldMatch[1] + ")");
+      for (const icons of Object.values(oldCats)) {
+        for (const icon of icons) knownNames.add(icon.name);
+      }
+    }
+  } catch {}
 
   const categorized = {};
   for (const cat of CATEGORY_ORDER) {
@@ -176,11 +189,13 @@ async function main() {
     if (fillLigatures[name]) icon.fill = fillLigatures[name];
 
     let category;
-    if (knownCategories[name]) {
-      category = knownCategories[name];
+    if (overrides[name]) {
+      category = overrides[name];
     } else {
       category = guessCategory(name);
-      knownCategories[name] = category;
+    }
+
+    if (!knownNames.has(name)) {
       newIcons++;
       console.log(`  New icon: "${name}" -> ${category}`);
     }
@@ -190,8 +205,6 @@ async function main() {
     }
     categorized[category].push(icon);
   }
-
-  fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(knownCategories, null, 2), "utf-8");
 
   const stats = {
     total: allNames.size,
